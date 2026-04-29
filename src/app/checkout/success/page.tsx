@@ -37,7 +37,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
       id: string;
       product_name: string;
       quantity: number;
-      unit_price: number;
+      price: number;
       subtotal: number;
     }>;
   };
@@ -193,7 +193,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
                       {item.product_name}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {item.quantity}× Rp {item.unit_price.toLocaleString("id-ID")}
+                      {item.quantity}× Rp {item.price.toLocaleString("id-ID")}
                     </p>
                   </div>
                   <span className="shrink-0 text-sm font-semibold text-gray-800">

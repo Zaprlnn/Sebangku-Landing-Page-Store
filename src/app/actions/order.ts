@@ -129,7 +129,7 @@ export async function confirmOrderPaid(orderNumber: string): Promise<ConfirmPaym
     return { success: false, error: "Anda harus login untuk melanjutkan." };
   }
 
-  const { data: confirmResult, error } = await supabase.rpc("confirm_order_paid", {
+  const { data: confirmResult, error } = await supabase.rpc("finalize_payment", {
     p_order_number: orderNumber,
   });
 
