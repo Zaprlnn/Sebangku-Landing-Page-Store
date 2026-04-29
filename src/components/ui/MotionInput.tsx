@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import clsx from "clsx";
 
-interface MotionInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type MotionInputProps = HTMLMotionProps<"input"> & {
   label: string;
   error?: string;
   wrapperClassName?: string;
-}
+};
 
 export function MotionInput({
   label,
@@ -58,11 +58,11 @@ export function MotionInput({
   );
 }
 
-interface MotionTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+type MotionTextareaProps = HTMLMotionProps<"textarea"> & {
   label: string;
   error?: string;
   wrapperClassName?: string;
-}
+};
 
 export function MotionTextarea({
   label,

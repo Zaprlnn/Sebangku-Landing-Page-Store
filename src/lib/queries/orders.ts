@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Tables } from "@/lib/types/database";
+import type { Tables, TablesInsert } from "@/lib/types/database";
 
 export type Order = Tables<"orders">;
 export type OrderItem = Tables<"order_items">;
@@ -51,7 +51,7 @@ export async function getOrderByNumber(
 }
 
 export async function createOrder(
-  orderData: Tables<"orders">["Insert"]
+  orderData: TablesInsert<"orders">
 ): Promise<Order> {
   const supabase = await createClient();
   const { data, error } = await supabase

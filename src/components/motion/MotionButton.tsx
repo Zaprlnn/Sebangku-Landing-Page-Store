@@ -1,11 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import clsx from "clsx";
+import type { ReactNode } from "react";
 
-interface MotionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type MotionButtonProps = Omit<HTMLMotionProps<"button">, "children"> & {
   loading?: boolean;
-}
+  children?: ReactNode;
+};
 
 export function MotionButton({
   loading,

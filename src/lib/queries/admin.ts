@@ -5,6 +5,9 @@ export type Profile = Tables<"profiles">;
 export type Order = Tables<"orders">;
 export type Product = Tables<"products">;
 
+export type AdminOrderRow = Pick<Order, "id" | "order_number" | "total" | "status" | "created_at" | "user_id">;
+export type AdminProductRow = Pick<Product, "id" | "name" | "price" | "stock" | "is_active">;
+
 export async function getAdminSummary() {
   const supabase = await createClient();
 
@@ -43,7 +46,7 @@ export async function getAdminUsers(limit = 12): Promise<Profile[]> {
   return data ?? [];
 }
 
-export async function getAdminOrders(limit = 10): Promise<Order[]> {
+export async function getAdminOrders(limit = 10): Promise<AdminOrderRow[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("orders")
@@ -51,10 +54,10 @@ export async function getAdminOrders(limit = 10): Promise<Order[]> {
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  return data ?? [];
+  return (data ?? []) as AdminOrderRow[];
 }
 
-export async function getAdminProducts(limit = 8): Promise<Product[]> {
+export async function getAdminProducts(limit = 8): Promise<AdminProductRow[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
@@ -62,5 +65,5 @@ export async function getAdminProducts(limit = 8): Promise<Product[]> {
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  return data ?? [];
+  return (data ?? []) as AdminProductRow[];
 }

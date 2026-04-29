@@ -1,20 +1,21 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import type { Tables } from "@/lib/types/database";
 
 type PointsLedger = Tables<"points_ledger">;
 
-const listVariants = {
+const listVariants: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.07, delayChildren: 0.1 },
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -16 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
+  show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+  exit: { opacity: 0, x: -16, transition: { duration: 0.2, ease: "easeIn" as const } },
 };
 
 function formatDate(iso: string) {
@@ -51,13 +52,16 @@ export function PointHistoryList({ history }: Props) {
       animate="show"
       className="divide-y divide-gray-100"
     >
-      <AnimatePresence>
+      <AnimatePresence mode="popLayout">
         {history.map((entry) => {
           const isCredit = entry.points_delta > 0;
           return (
             <motion.li
               key={entry.id}
               variants={itemVariants}
+              initial="hidden"
+              animate="show"
+              exit="exit"
               layout
               className="flex items-center gap-3 py-3 sm:gap-4"
             >

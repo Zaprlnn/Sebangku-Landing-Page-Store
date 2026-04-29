@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, type Easing } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useEffect } from "react";
 
 const NAV_LINKS = [
@@ -19,25 +19,26 @@ interface MobileMenuProps {
   points?: number | null;
 }
 
-const overlayVariants = {
+const overlayVariants: Variants = {
   hidden: { opacity: 0 },
   show:   { opacity: 1, transition: { duration: 0.2 } },
   exit:   { opacity: 0, transition: { duration: 0.18 } },
 };
 
-const drawerVariants = {
+const drawerVariants: Variants = {
   hidden: { x: "-100%" },
-  show:   { x: 0,      transition: { type: "spring", stiffness: 340, damping: 34 } },
-  exit:   { x: "-100%",transition: { duration: 0.22, ease: "easeIn" } },
+  show:   { x: 0,      transition: { type: "spring" as const, stiffness: 340, damping: 34 } },
+  exit:   { x: "-100%",transition: { duration: 0.22, ease: "easeIn" as const } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   show:   (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { delay: 0.08 + i * 0.06, duration: 0.3, ease: "easeOut" as Easing },
+    transition: { delay: 0.08 + i * 0.06, duration: 0.3, ease: "easeOut" as const },
   }),
+  exit:   { opacity: 0, x: -20, transition: { duration: 0.15, ease: "easeIn" as const } },
 };
 
 export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
@@ -118,6 +119,7 @@ export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
                 variants={itemVariants}
                 initial="hidden"
                 animate="show"
+                exit="exit"
                 className="mx-4 mt-4 rounded-xl bg-blue-50 px-4 py-3"
               >
                 <div className="flex items-center gap-3">
@@ -140,7 +142,7 @@ export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
             {/* Nav links */}
             <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
               {NAV_LINKS.map(({ href, label, icon }, i) => (
-                <motion.div key={href} custom={i + 1} variants={itemVariants} initial="hidden" animate="show">
+                <motion.div key={href} custom={i + 1} variants={itemVariants} initial="hidden" animate="show" exit="exit">
                   <Link
                     href={href}
                     onClick={onClose}
@@ -163,6 +165,7 @@ export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
               variants={itemVariants}
               initial="hidden"
               animate="show"
+              exit="exit"
               className="border-t border-gray-100 p-4"
             >
               <Link
