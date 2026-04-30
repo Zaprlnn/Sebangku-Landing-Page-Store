@@ -17,7 +17,7 @@ const NAV_LINKS = [
 function SkeletonPill({ width }: { width: string }) {
   return (
     <span
-      className={`inline-block ${width} h-8 rounded-xl bg-gray-100 animate-pulse`}
+      className={`hidden sm:inline-block ${width} h-8 rounded-xl bg-gray-100 animate-pulse`}
       aria-hidden="true"
     />
   );
@@ -75,6 +75,7 @@ export function Navbar() {
   const showSkeleton = !mounted || loading;
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-gray-100/80 bg-white/95 shadow-sm backdrop-blur">
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-[72px] gap-4">
@@ -159,77 +160,104 @@ export function Navbar() {
 
             {/* ── Auth CTA ────────────────────────────────────────────────── */}
             {showSkeleton ? (
-              /* Skeleton while auth is resolving — same space as the button */
+              /* Skeleton while auth is resolving */
               <SkeletonPill width="w-20" />
             ) : user ? (
-              /* ── Logged-in: Profile dropdown ──────────────────────────── */
-              <div className="relative hidden sm:flex" ref={profileRef}>
+              <>
+                {/* ── Mobile: Avatar icon (opens drawer) ──────────────────── */}
                 <button
-                  id="navbar-profile-btn"
+                  id="navbar-profile-avatar-mobile"
                   type="button"
-                  onClick={() => setProfileOpen((open) => !open)}
-                  className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:border-blue-200 hover:text-blue-600 transition-all duration-200"
-                  aria-expanded={profileOpen}
-                  aria-haspopup="menu"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  className="flex sm:hidden items-center justify-center w-9 h-9 rounded-full bg-blue-50 text-blue-600 border border-blue-100 transition-all duration-200 active:scale-95"
+                  aria-label="Buka menu profil"
                 >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
-                      <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </span>
-                  <span>Profil</span>
-                  <svg
-                    width="14"
-                    height="14"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                    className={`transition-transform duration-200 ${profileOpen ? "rotate-180" : ""}`}
-                  >
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                    <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </button>
 
-                {profileOpen && (
-                  <div
-                    role="menu"
-                    className="absolute right-0 top-full z-50 mt-2 w-64 rounded-2xl border border-gray-100 bg-white p-4 shadow-lg"
+                {/* ── Desktop: Profile dropdown ──────────────────────────── */}
+                <div className="relative hidden sm:flex" ref={profileRef}>
+                  <button
+                    id="navbar-profile-btn"
+                    type="button"
+                    onClick={() => setProfileOpen((open) => !open)}
+                    className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:border-blue-200 hover:text-blue-600 transition-all duration-200"
+                    aria-expanded={profileOpen}
+                    aria-haspopup="menu"
                   >
-                    <p className="text-xs font-semibold text-gray-400">Profil Saya</p>
-                    <p className="mt-1 text-sm font-semibold text-gray-900">{displayName}</p>
-                    <p className="mt-0.5 text-xs text-gray-500">{user.email ?? "-"}</p>
-                    <p className="mt-0.5 text-xs text-gray-500">{displayPhone}</p>
-
-                    {/* Points summary inside dropdown */}
-                    <div className="mt-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-100">
-                      <span aria-hidden="true" className="text-sm">⭐</span>
-                      <span className="text-xs font-semibold text-amber-700">
-                        {pointsLoading
-                          ? "Memuat poin..."
-                          : `${(points ?? 0).toLocaleString("id-ID")} Poin`}
-                      </span>
-                    </div>
-
-                    <Link
-                      href="/profile"
-                      className="mt-3 flex w-full items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition-colors duration-200"
-                      onClick={() => setProfileOpen(false)}
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                        <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                    <span>Profil</span>
+                    <svg
+                      width="14"
+                      height="14"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className={`transition-transform duration-200 ${profileOpen ? "rotate-180" : ""}`}
                     >
-                      Lihat Profil
-                    </Link>
-                  </div>
-                )}
-              </div>
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </button>
+
+                  {profileOpen && (
+                    <div
+                      role="menu"
+                      className="absolute right-0 top-full z-50 mt-2 w-64 rounded-2xl border border-gray-100 bg-white p-4 shadow-lg"
+                    >
+                      <p className="text-xs font-semibold text-gray-400">Profil Saya</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-900">{displayName}</p>
+                      <p className="mt-0.5 text-xs text-gray-500">{user.email ?? "-"}</p>
+                      <p className="mt-0.5 text-xs text-gray-500">{displayPhone}</p>
+
+                      {/* Points summary inside dropdown */}
+                      <div className="mt-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-100">
+                        <span aria-hidden="true" className="text-sm">⭐</span>
+                        <span className="text-xs font-semibold text-amber-700">
+                          {pointsLoading
+                            ? "Memuat poin..."
+                            : `${(points ?? 0).toLocaleString("id-ID")} Poin`}
+                        </span>
+                      </div>
+
+                      <Link
+                        href="/profile"
+                        className="mt-3 flex w-full items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition-colors duration-200"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        Lihat Profil
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </>
             ) : (
-              /* ── Guest: Masuk button ────────────────────────────────────── */
-              <Link
-                id="navbar-login-btn"
-                href="/login"
-                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm active:scale-95"
-              >
-                Masuk
-              </Link>
+              <>
+                {/* ── Mobile: Masuk link kecil ─────────────────────────────── */}
+                <Link
+                  id="navbar-login-btn-mobile"
+                  href="/login"
+                  className="flex sm:hidden items-center justify-center px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-200 active:scale-95"
+                >
+                  Masuk
+                </Link>
+
+                {/* ── Desktop: Masuk button ────────────────────────────────── */}
+                <Link
+                  id="navbar-login-btn"
+                  href="/login"
+                  className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm active:scale-95"
+                >
+                  Masuk
+                </Link>
+              </>
             )}
 
             {/* ── Hamburger ──────────────────────────────────────────────── */}
@@ -252,14 +280,17 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* ── Mobile Menu (animated drawer) ──────────────────────────── */}
-        <MobileMenu
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-          user={user}
-          points={points}
-        />
       </div>
     </header>
+
+    {/* ── Mobile Menu — rendered OUTSIDE <header> to avoid backdrop-blur stacking context */}
+    <MobileMenu
+      open={menuOpen}
+      onClose={() => setMenuOpen(false)}
+      user={user}
+      points={points}
+      pointsLoading={pointsLoading}
+    />
+    </>
   );
 }

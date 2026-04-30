@@ -17,6 +17,7 @@ interface MobileMenuProps {
   onClose: () => void;
   user?: { email?: string | null; user_metadata?: Record<string, unknown> } | null;
   points?: number | null;
+  pointsLoading?: boolean;
 }
 
 const overlayVariants: Variants = {
@@ -41,7 +42,7 @@ const itemVariants: Variants = {
   exit:   { opacity: 0, x: -20, transition: { duration: 0.15, ease: "easeIn" as const } },
 };
 
-export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
+export function MobileMenu({ open, onClose, user, points, pointsLoading }: MobileMenuProps) {
   const pathname = usePathname();
 
   // Lock body scroll while open
@@ -131,9 +132,9 @@ export function MobileMenu({ open, onClose, user, points }: MobileMenuProps) {
                     <p className="truncate text-xs text-gray-500">{user.email ?? "-"}</p>
                   </div>
                 </div>
-                {points !== null && points !== undefined && (
+                {(points !== null && points !== undefined || pointsLoading) && (
                   <div className="mt-2 flex items-center gap-1 rounded-lg bg-amber-50 border border-amber-100 px-2.5 py-1.5 text-xs font-semibold text-amber-700">
-                    ⭐ {points.toLocaleString("id-ID")} Poin
+                    ⭐ {pointsLoading ? "Memuat poin..." : `${points!.toLocaleString("id-ID")} Poin`}
                   </div>
                 )}
               </motion.div>
