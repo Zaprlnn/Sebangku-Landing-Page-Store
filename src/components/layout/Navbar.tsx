@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/hooks/use-cart";
@@ -85,15 +86,15 @@ export function Navbar() {
             className="flex items-center gap-2 shrink-0"
             aria-label="Sebangku Store"
           >
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 6h16M4 10h16M4 14h10M4 18h7"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-white">
+              <Image
+                src="/images/logo.jpeg"
+                alt="Sebangku Store"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+                priority
+              />
             </span>
             <span className="text-lg font-800 text-gray-900 font-extrabold leading-none">
               Sebangku<span className="text-blue-600">Store</span>

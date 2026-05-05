@@ -99,21 +99,20 @@ export async function registerAction(
     email,
     password,
     options: {
-      data: { full_name: name.trim(), phone_number: phoneNumber.trim() },
+      data: { full_name: name.trim(), phone: phoneNumber.trim() },
     },
   });
 
   if (error) {
-    const message = error.message.toLowerCase().includes("already registered")
-      ? "Email sudah terdaftar. Silakan login."
-      : error.message;
-    return { error: message };
+    console.error("SIGNUP ERROR:", error);
+    return { error: error.message };
   }
 
   if (!data.user) {
     return { error: "Registrasi gagal. Coba lagi." };
   }
 
+  // === INSERT MANUAL (trigger sudah off) ===
   const { error: insertError } = await admin.from("profiles").insert({
     id: data.user.id,
     full_name: name.trim(),
@@ -122,10 +121,11 @@ export async function registerAction(
   });
 
   if (insertError) {
-    return { error: "Gagal menyimpan profil pengguna." };
+    console.error("INSERT PROFILE ERROR:", insertError);
+    // Jangan gagalkan register, user sudah terdaftar
   }
 
   return {
-    success: "Akun berhasil dibuat! Cek email kamu untuk link verifikasi sebelum login.",
+    success: "Akun berhasil dibuat! Cek email untuk verifikasi.",
   };
 }

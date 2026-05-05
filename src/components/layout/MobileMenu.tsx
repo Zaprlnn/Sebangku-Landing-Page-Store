@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useEffect } from "react";
@@ -95,8 +96,14 @@ export function MobileMenu({ open, onClose, user, points, pointsLoading }: Mobil
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
               <span className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-                  🎲
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm shadow-gray-200">
+                  <Image
+                    src="/images/logo.jpeg"
+                    alt="Sebangku Store"
+                    width={32}
+                    height={32}
+                    className="h-8 w-8 object-contain"
+                  />
                 </span>
                 <span className="text-base font-extrabold text-gray-900">
                   Sebangku<span className="text-blue-600">Store</span>

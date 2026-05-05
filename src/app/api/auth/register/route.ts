@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       email,
       password,
       options: {
-        data: { full_name: fullName.trim(), phone_number: phoneNumber.trim() },
+        data: { full_name: fullName.trim(), phone: phoneNumber.trim() },
       },
     });
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { RegisterForm } from "./RegisterForm";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Daftar Akun — Sebangku Store",
@@ -13,7 +14,16 @@ export default function RegisterPage() {
       {/* Logo */}
       <div className="auth-logo">
         <Link href="/" className="auth-logo-link">
-          <div className="auth-logo-icon">🎲</div>
+          <span className="auth-logo-icon">
+            <Image
+              src="/images/logo.jpeg"
+              alt="Sebangku Store"
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain"
+              priority
+            />
+          </span>
           <span className="auth-logo-text">Sebangku<span>Store</span></span>
         </Link>
       </div>

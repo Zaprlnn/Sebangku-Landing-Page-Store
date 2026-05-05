@@ -70,8 +70,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     // 1. Baca sesi yang tersimpan di cookie/localStorage saat pertama mount.
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (cancelled) return;
+
+      if (error?.message?.toLowerCase().includes("refresh token")) {
+        // Refresh token invalid biasanya berasal dari sesi lama yang sudah dihapus.
+        // Bersihkan state lokal agar UI kembali ke kondisi anon.
+        supabase.auth.signOut();
+        setSession(null);
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -90,7 +104,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, [supabase]);
 
   return (
